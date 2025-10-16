@@ -1,5 +1,7 @@
 package lvt.oop;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.regex.Pattern;
 
 import javax.swing.JDialog;
@@ -93,6 +95,20 @@ public class Metodes {
 		JDialog jd = jop.createDialog(jf, "Atruma iestatīšana iestatīšana");
 		jd.setVisible(true);;
 		return (int) jop.getInputValue();
+	}
+	
+	static int ritenaIzvele(ArrayList<Object> riteni) {
+		String[] rSaraksts = new String[riteni.size()];
+		
+		for(int i = 0; i < rSaraksts.length; i++) {
+			rSaraksts[i] = (((Velosipeds)riteni.get(i)).noteiktRaz()) + " " + (((Velosipeds)riteni.get(i)).noteiktCenu()) + " EUR";
+ 					
+		}
+		
+		String izveletais = (String) JOptionPane.showInputDialog(null, "Izvēlies riteni", "Izvēle", JOptionPane.QUESTION_MESSAGE, null, rSaraksts, rSaraksts[0]);
+		
+		return Arrays.asList(rSaraksts).indexOf(izveletais);
+		
 	}
 	
 }

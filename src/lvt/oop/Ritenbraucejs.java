@@ -78,7 +78,14 @@ public class Ritenbraucejs {
 			//Riteņa noņemšana
 			
 		case 1 :
-			
+			if(riteni.size() > 0) {
+				int ritId = Metodes.ritenaIzvele(riteni);
+				riteni.remove(ritId);
+				
+				JOptionPane.showMessageDialog(null, "Ritenis ir veiksmīgi dzests!", "Paziņojums", JOptionPane.QUESTION_MESSAGE);
+			} else {
+				JOptionPane.showMessageDialog(null, "Sarakstā nav neviena riteņa", "Brīdinājums", JOptionPane.WARNING_MESSAGE);
+			}
 			break;
 		}
 	}while(izvelesID!= 5);
