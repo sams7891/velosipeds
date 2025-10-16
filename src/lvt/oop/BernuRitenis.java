@@ -12,38 +12,39 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JOptionPane;
 
 public class BernuRitenis extends Velosipeds{
-	//Atribūti
-	
+// atribūti
 	private boolean paligriteni, zvanins;
 	
-	public BernuRitenis(boolean paligRiteni, boolean zvanins, int iestatAtrums, boolean atsperes, int ritenaD, int sedeklaPoz, double cena, String razotajs, boolean paligriteni) {
-		super(ritenaD, sedeklaPoz, cena, razotajs);
-		this.paligriteni = paligriteni;
-		this.zvanins = zvanins;
-	}
-	
-	//Metodes
+	public BernuRitenis(boolean paligriteni, boolean zvanins, int ritenaD, int sedeklaPoz, double cena, String razotajs) {
+	super(ritenaD, sedeklaPoz, cena, razotajs);
+	this.paligriteni = paligriteni;
+	this.zvanins = zvanins;
+}
+
+// metodes
 	public void darbArPaligrit(boolean darbiba) {
 		if(darbiba && paligriteni == false) {
 			paligriteni = true;
-			JOptionPane.showMessageDialog(null, "Palīgriteņi tikai piestiprināti", "Paziņojums", JOptionPane.INFORMATION_MESSAGE);
-		} else if(darbiba == false && paligriteni) {
+			JOptionPane.showMessageDialog(null, "Palīgriteņi tika piestiprināti!", "Paziņojums",
+					JOptionPane.INFORMATION_MESSAGE);
+		}else if (darbiba==false && paligriteni) {
 			paligriteni = false;
-			JOptionPane.showMessageDialog(null, "Palīgriteņi tikai noņemti", "Paziņojums", JOptionPane.INFORMATION_MESSAGE);
-		} else {
-			JOptionPane.showMessageDialog(null, "Darbība nav iespējama", "Paziņojums", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Palīgriteņi tika piestiprināti!", "Paziņojums",
+					JOptionPane.INFORMATION_MESSAGE);
+		}else {
+			JOptionPane.showMessageDialog(null, "Darbība iespējama!", "Paziņojums",
+					JOptionPane.WARNING_MESSAGE);
 		}
 	}
 	
-	public void zvanitZvaninu() throws MalformedURLException, UnsupportedAudioFileException, IOException, LineUnavailableException {
+	public void zvanitZvaninu() throws MalformedURLException, UnsupportedAudioFileException, IOException, LineUnavailableException{
 		if(zvanins) {
-			File f = new File(".//audio//" + "ring.waw");
+			File f = new File(".//audio//"+"ring.wav");
 			AudioInputStream ais = AudioSystem.getAudioInputStream(f.toURI().toURL());
 			Clip c = AudioSystem.getClip();
-            c.open(ais);
-            c.start();
-		}else {
-			JOptionPane.showMessageDialog(null, "Nav uzstādīts zvaniņš", "Paziņojums", JOptionPane.ERROR_MESSAGE);
-		}
+			c.open(ais);
+			c.start();
+		}else
+			JOptionPane.showMessageDialog(null, "Nav uzstādīts zvaniņš!", "Brīdinājums", JOptionPane.WARNING_MESSAGE);
 	}
 }

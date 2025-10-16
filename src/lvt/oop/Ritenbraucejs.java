@@ -2,81 +2,86 @@ package lvt.oop;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
 import javax.swing.JOptionPane;
 
 
+
 public class Ritenbraucejs {
-		
-	public static int skaitlaParbaude(String zinojums, int min, int max) {
-		String ievade;
-		int skaitlis;
-		
-		while(true) {
-			ievade = JOptionPane.showInputDialog(null, zinojums, "Datu ievade", JOptionPane.INFORMATION_MESSAGE);
-			
-			if(ievade == null)
-				return -1;
-			
-			try {
-				skaitlis = Integer.parseInt(ievade);
-				
-				if(skaitlis < min || skaitlis > max) {
-					JOptionPane.showMessageDialog(null, "Norādīts nederīgs intervāls", "Nekorekti dati", JOptionPane.WARNING_MESSAGE);
-					continue;
-					
-				}
-				return skaitlis;
-			}catch(NumberFormatException e) {
-				JOptionPane.showMessageDialog(null, "Netika ievadīts vesels skaitlis\n" + e, "Kļūda", JOptionPane.ERROR_MESSAGE);
-			}
-		}
-	}
 	
 	public static void main(String[] args) {
-		String izvele;
-		int izvelesID;
-		String[] darbibas = {"Jauns ritenis", "Noņemt riteni", "Riteņu saraksts", "Kārtot pēc cenas", "Izsaukt meodi", "Aizvērt programmu"};
-		String[] veidi = {"Velospēds", "Kalnu velosipēds", "Bērnu velospiēds"};
-		String[] atbilde = {"Jā", "Nē"};
+	String izvele; 
+	int izvelesID;
+	String[] darbibas = {"Jauns ritenis", "Noņemt riteni", "Riteņu saraksts", "Kārtot pēc cenas", "Izsaukt metodi",
+			"Aizvērt programmu"};
+	String[] veidi = {"Velosipēds", "Kalnu velosipēds", "Bērnu velosipēds"};
+	String[] atbilde = {"Jā", "Nē"};		
+	ArrayList<Object> riteni = new ArrayList<>();
+	
+	do {
+		izvele = (String)JOptionPane.showInputDialog(null, "Izvēlies darbību", "Izvēlne", JOptionPane.INFORMATION_MESSAGE, null, darbibas, darbibas[0]);
+		if(izvele == null)
+		break;
 		
-		ArrayList<Object> riteni = new ArrayList<>();
+		izvelesID = Arrays.asList(darbibas).indexOf(izvele);
 		
-		do {
-			izvele = (String) JOptionPane.showInputDialog(null, "Izvēlies darbību", "LVT riteņi", JOptionPane.QUESTION_MESSAGE, null, darbibas, darbibas[0]);
-			
+		switch(izvelesID) {
+		case 0:
+			izvele = (String)JOptionPane.showInputDialog(null, "Izvēlies riteņa veidu", "Izvēlne", JOptionPane.QUESTION_MESSAGE, null, veidi, veidi[0]);
 			if(izvele == null)
 				break;
 			
-			izvelesID = Arrays.asList(darbibas).indexOf(izvele);
+			izvelesID = Arrays.asList(veidi).indexOf(izvele);
+			String razotajs =  Metodes.virknesParbaude("Norādi riteņa ražotāju", "Rockmachine");
+			double cena = Metodes.skaitlaParbaude("Cik maksā ritenis?", 1.00, 9999.99, "100");
+			double diametrs = Metodes.skaitlaParbaude("Kāds ir riteņa diametrs?", 12, 26, "16");
 			
-			switch(izvelesID) {
-			case 0 :
-				String ritenaVeids = (String)JOptionPane.showInputDialog(null, "Kādu riteņa veidu vēlēsieties", "LVT riteņi", JOptionPane.QUESTION_MESSAGE, null, veidi, veidi[0]);
+			int sedPoz = Metodes.iestatitSedekli();
+			
+			if(izvelesID == 0) {
+				riteni.add(new Velosipeds((int) diametrs, sedPoz, cena, razotajs));
+				JOptionPane.showMessageDialog(null, "Veiksmīgi izveidots jauns ritenis!", "Paziņojums", JOptionPane.INFORMATION_MESSAGE);	
+			} else if(izvelesID == 1) {
+				int iestatAtr = Metodes.iestatitAtrumu();
 				
-				if(ritenaVeids == null)
+				izvele = (String) JOptionPane.showInputDialog(null, "Vai ritenim ir papildus amortizācija?", "Izvēle", JOptionPane.QUESTION_MESSAGE, null, atbilde, atbilde[0]);
+				
+				if(izvele == null)
 					break;
 				
-				int diametrs = skaitlaParbaude("Kāds būs riteņa dieametrs\nMin 12, Max 29", 12, 29);
+				izvelesID = Arrays.asList(atbilde).indexOf(izvele);
+				boolean atsperes = (izvelesID == 0)? true : false;
 				
-				int pozicija = skaitlaParbaude("Kāda būs riteņa pozīcija\nMin 1, Max 10", 12, 10);
+				riteni.add(new KalnuRitenis(iestatAtr, atsperes, (int) diametrs, sedPoz, cena, razotajs));
+				JOptionPane.showMessageDialog(null, "Veiskmīgi izveidots kalnu ritenis.", "Paziņojums", JOptionPane.INFORMATION_MESSAGE);
+			}else if(izvelesID == 2) {
+				izvele = (String) JOptionPane.showInputDialog(null, "Vai ritenim ir palīgriteņi?", "Izvēle", JOptionPane.QUESTION_MESSAGE, null, atbilde, atbilde[0]);
 				
-				int cena = skaitlaParbaude("Kāds būs riteņa cena\nMin 0, Max 10000", 0, 10000);
+				if(izvele == null)
+					break;
 				
-				String razotajs = JOptionPane.showInputDialog(null, "Kāds ir riteņa ražotājs", "LVT riteņi", JOptionPane.QUESTION_MESSAGE);
+				izvelesID = Arrays.asList(atbilde).indexOf(izvele);
+				boolean paligRit = (izvelesID == 0)? true : false;
+				
+				izvele = (String) JOptionPane.showInputDialog(null, "Vai ritenim ir zvaniņš?", "Izvēle", JOptionPane.QUESTION_MESSAGE, null, atbilde, atbilde[0]);
+				
+				if(izvele == null)
+					break;
+				
+				izvelesID = Arrays.asList(atbilde).indexOf(izvele);
+				boolean zvanins = (izvelesID == 0)? true : false;
 				
 				
-				if(ritenaVeids.equals("Velosipeds")) {
-					ritenis = new Velosipeds(diametrs, pozicija, cena, razotajs);
-				}
-				
-				
-
-				
-				
-				break;
+				riteni.add(new BernuRitenis(paligRit, zvanins, (int) diametrs, sedPoz, cena, razotajs));
+				JOptionPane.showMessageDialog(null, "Veiskmīgi izveidots kalnu ritenis.", "Paziņojums", JOptionPane.INFORMATION_MESSAGE);
 			}
+			break;
+			//Riteņa noņemšana
 			
-		}while(izvelesID != 5);
+		case 1 :
+			
+			break;
+		}
+	}while(izvelesID!= 5);
+	
 	}
 }
