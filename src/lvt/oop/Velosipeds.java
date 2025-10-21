@@ -2,7 +2,7 @@ package lvt.oop;
 
 import java.util.Random;
 
-public class Velosipeds {
+public class Velosipeds implements Comparable<Velosipeds> {
 	//Atribūti
 	
 	private int ritenaD, sedeklaPoz;
@@ -29,17 +29,17 @@ public class Velosipeds {
 	public String noteiktRaz() {
 		return razotajs;
 	}
-	public double noteiktCenu() {
+	public Double noteiktCenu() {
 		return cena;
 	}
-	public double kustiba() {
+	public Double kustiba() {
 		double celsM, laiksS;
 		Random rand = new Random();
 		
 		celsM = rand.nextDouble()*(1000 - 1) + 1;
 		laiksS = rand.nextDouble()*(60 - 10) + 10;
 		
-		return Math.round(celsM / laiksS);
+		return (double) Math.round(celsM / laiksS);
 	}
 	
 	public double noteiktAtr() {
@@ -58,8 +58,8 @@ public class Velosipeds {
 		sedeklaPoz = pozicija;
 	}
 	
-	public void mities(int minienuSk) {
-		atrumsMS += noteiktAtr() + (0.15 * minienuSk);
+	public double mities(int minienuSk) {
+		return atrumsMS += noteiktAtr() + (0.15 * minienuSk);
 	}
 	
 	public void bremzet(int berze) {
@@ -69,6 +69,12 @@ public class Velosipeds {
 			if(atrumsMS < 0)
 				atrumsMS = 0;
 		}
+	}
+	@Override
+	public int compareTo(Velosipeds v) {
+		
+		
+		return this.noteiktCenu().compareTo(v.noteiktCenu());
 	}
 	
 }

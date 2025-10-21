@@ -1,14 +1,23 @@
 package lvt.oop;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.ScrollPaneConstants;
 
 
 
 public class Ritenbraucejs {
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws MalformedURLException, UnsupportedAudioFileException, IOException, LineUnavailableException {
 	String izvele; 
 	int izvelesID;
 	String[] darbibas = {"Jauns ritenis", "Noņemt riteni", "Riteņu saraksts", "Kārtot pēc cenas", "Izsaukt metodi",
@@ -16,6 +25,7 @@ public class Ritenbraucejs {
 	String[] veidi = {"Velosipēds", "Kalnu velosipēds", "Bērnu velosipēds"};
 	String[] atbilde = {"Jā", "Nē"};		
 	ArrayList<Object> riteni = new ArrayList<>();
+	int minieni = 0;
 	
 	do {
 		izvele = (String)JOptionPane.showInputDialog(null, "Izvēlies darbību", "Izvēlne", JOptionPane.INFORMATION_MESSAGE, null, darbibas, darbibas[0]);
@@ -87,6 +97,94 @@ public class Ritenbraucejs {
 				JOptionPane.showMessageDialog(null, "Sarakstā nav neviena riteņa", "Brīdinājums", JOptionPane.WARNING_MESSAGE);
 			}
 			break;
+			
+		case  2 :
+			if(riteni.size() > 0) {
+				String str = "";
+				
+				for(int i = 0; i < riteni.size(); i++) {
+					str += ((Velosipeds)riteni.get(i)).izvadit()
+							+ "\n/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*\n";
+				}
+				
+				JTextArea ta = new JTextArea (str, 10, 40);
+				ta.setEditable(false);
+				JScrollPane sp = new JScrollPane(ta);
+				sp.setVerticalScrollBarPolicy(
+						ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+				JOptionPane.showMessageDialog(ta, sp, "Saraksts", JOptionPane.PLAIN_MESSAGE);
+				
+			}else {
+				JOptionPane.showMessageDialog(null, "Sarakstā nav neviena riteņa", "Brīdinājums", JOptionPane.WARNING_MESSAGE);
+			}
+			break;
+		case 3:
+			if (riteni.size() > 0) {
+				String atb = (String)JOptionPane.showInputDialog(null, "Kārtot pēc cenas augoši?", "Izvēle", JOptionPane.PLAIN_MESSAGE, null, atbilde, atbilde[0]);
+				if (atb != null) {
+					if (atb.equals("Jā")) {
+						riteni.sort(null);
+						JOptionPane.showMessageDialog(null, "Riteņi sakārtoti augosi!", "Kārtošana", JOptionPane.INFORMATION_MESSAGE);
+					} else {
+						riteni.sort(Collections.reverseOrder());
+						JOptionPane.showMessageDialog(null, "Riteņi sakārtoti dilstoši!", "Kārtošana", JOptionPane.INFORMATION_MESSAGE);
+					}
+				} else {
+					break;
+				}
+			}
+		case 4:
+			if (riteni.size() > 0) {
+				int kurs = Metodes.ritenaIzvele(riteni);
+				String[] metodes = {"Ņoteikt riteņa izmēru", "Iestatīt sēdekli", "Noteikt kustības ātrumu", "Mīties", "Bremzēt", "Noteikt iestatīto ātrumu", "Pārslēgt ātrumu", "Palīgriteņi", "Zvaniņš"};
+				
+				izvele = (String)JOptionPane.showInputDialog(null, "Īzvēlies metodi", "Metodes izvēle", JOptionPane.QUESTION_MESSAGE, null, metodes, metodes[0]);
+				
+				if (izvele == null) {
+					break;
+				}
+				
+				izvelesID = Arrays.asList(metodes).indexOf(izvele);
+				
+				switch(izvelesID) {
+				
+				case 0:
+					JOptionPane.showMessageDialog(null, "Riteņa izmērs: " +  ((Velosipeds)riteni.get(kurs)).noteiktRitenaD(), "Riteņa izmērs", JOptionPane.PLAIN_MESSAGE);
+					break;
+					
+				case 1:
+					JOptionPane.showMessageDialog(null, "Sēdekļa pozīcija: " +  ((Velosipeds)riteni.get(kurs)).noteiktSedeklaPoz(), "Sēdekļa pozīcija", JOptionPane.PLAIN_MESSAGE);
+					break;
+					
+				case 2:
+					JOptionPane.showMessageDialog(null, "Riteņa ātrums: " +  ((Velosipeds)riteni.get(kurs)).noteiktAtr(), "Riteņa ātrums", JOptionPane.PLAIN_MESSAGE);
+					break;
+					
+				case 3:
+					minieni++;
+					JOptionPane.showMessageDialog(null,"Paminās! Minienu skaits: " + minieni + "\nJaunais riteņa ātrums: " + ((Velosipeds)riteni.get(kurs)).mities(minieni), "Riteņa ātrums", JOptionPane.PLAIN_MESSAGE, null);
+					break;
+				case 4:
+					int berze = Integer.parseInt(JOptionPane.showInputDialog(null, "Ievadi berzītes koeficientiņu: "));
+					((Velosipeds)riteni.get(kurs)).bremzet(berze);
+					break;
+				case 8:
+					if (riteni.get(kurs) instanceof BernuRitenis) {
+						((BernuRitenis)riteni.get(kurs)).zvanitZvaninu();
+						
+						
+					} else {
+						JOptionPane.showMessageDialog(null, "Šim riteņa veidam nav zvaniņš!", "Kļūda", JOptionPane.ERROR_MESSAGE);
+					}
+					break;
+				}
+				
+			} else {
+				JOptionPane.showMessageDialog(null, "Sarakstā nav neviens ritenis!", "enformācija", JOptionPane.WARNING_MESSAGE);
+			}
+			break;
+		case 5:
+			JOptionPane.showMessageDialog(null, "Programma Rodrigota!", "Kārtošana", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}while(izvelesID!= 5);
 	
